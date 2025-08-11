@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信朋友圈</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f7fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .post {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .post img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        .post .post-message {
+            padding: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        .post .post-message p {
+            margin: 0;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+        }
+        .post-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .post-header .nickname {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .post-header .time {
+            font-size: 12px;
+            color: #aaa;
+        }
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+        .file-upload-wrapper {
+            display: inline-block;
+            cursor: pointer;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            text-align: center;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .file-upload-wrapper:hover {
+            background-color: #45a049;
+        }
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen">
+
+    <div class="w-full max-w-lg p-5">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-10">微信朋友圈</h1>
+
+        <!-- 上传表单 -->
+        <div class="form-container mb-6">
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="file" class="block text-gray-700 text-lg mb-2">选择图片</label>
+                    <label for="file" class="file-upload-wrapper">
+                        点击选择图片
+                        <input type="file" name="file" accept="image/*" id="file" required>
+                    </label>
+                </div>
+                <div class="mb-4">
+                    <label for="message" class="block text-gray-700 text-lg">留言</label>
+                    <textarea name="message" id="message" class="w-full mt-2 p-3 border border-gray-300 rounded-lg" placeholder="说点什么..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary w-full py-2 rounded-lg font-semibold transition-all duration-300">上传</button>
+            </form>
+        </div>
+
+        <!-- 展示所有的图片和留言 -->
+        <div id="posts">
+            {% for post in posts %}
+                <div class="post p-4">
+                    <div class="post-header">
+                        <img src="{{ post.avatar }}" alt="头像">
+                        <div>
+                            <div class="nickname">{{ post.nickname }}</div>
+                            <div class="time">{{ post.time }}</div>
+                        </div>
+                    </div>
+                    <img src="{{ url_for('static', filename='uploads/' + post.image) }}" alt="帖子图片">
+                    <div class="post-message">
+                        <p>{{ post.message }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>
