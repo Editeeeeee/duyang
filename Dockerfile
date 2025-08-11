@@ -11,7 +11,7 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 公开 Flask 默认的 5000 端口
-EXPOSE 5000
+EXPOSE 80
 
 # 设置环境变量，避免每次运行时询问
 ENV FLASK_APP=app.py
